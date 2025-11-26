@@ -1,31 +1,33 @@
 ﻿using System.Numerics;
 using Raylib_cs;
 
-Raylib.InitWindow(1000, 1000, "Vinter God Jul");
+Raylib.InitWindow(1920, 1080, "Vinter God Jul");
+Raylib.ToggleFullscreen();
+// Simon Nordlund Magnusson rekommenderade^
 Raylib.SetTargetFPS(60);
 
 Texture2D placeholder = Raylib.LoadTexture("placeholder.png");
 // hämtar bilden 
-Rectangle placeholderrect = new(260, 500, placeholder.Dimensions);
+Rectangle placeholderrect = new(500, 500, placeholder.Dimensions);
 // skapar en rektangel vid 500, 500 med samma dimensioner som bilden
-float speed = 4;
+float speed = 8;
 // hastighet
 
 List<Vector2> stars = [];
 
 Random rand = new Random();
-    for (int star = 0; star < 50; star++)
-    // räknar stjärnor upp till 50 
-    {
-        Vector2 starPos = new(rand.Next(15,985), rand.Next(15,985));
-        stars.Add(starPos);
-        // krankhjälp^
+for (int star = 0; star < 5000; star++)
+// räknar stjärnor upp till 5000
+{
+    Vector2 starPos = new(rand.Next(15, 1905), rand.Next(15, 1065));
+    stars.Add(starPos);
+    // krankhjälp^
 
-        // Raylib.DrawCircle(rand.Next(15, 985), rand.Next(15, 985), 5, Color.White);
-        // den övre kommentaren funkariiish 
-        // rand.Next() gör så att stjärnorna placeras mellan pixel 15 och pixel 985
-        // 15 och 985 gör så att det är 15px mellanrum mellan yttersta stjärnan & bordern
-    }// Sixten Tamleht hjälpte med Random grejerna & förklarade hur for loopen funkar men jag förstår
+    // Raylib.DrawCircle(rand.Next(15, 985), rand.Next(15, 985), 5, Color.White);
+    // den övre kommentaren funkariiish 
+    // rand.Next() gör så att stjärnorna placeras mellan pixel 15 och pixel 985
+    // 15 och 985 gör så att det är 15px mellanrum mellan yttersta stjärnan & bordern
+}// Sixten Tamleht hjälpte med Random grejerna & förklarade hur for loopen funkar men jag förstår
 
 
 while (Raylib.WindowShouldClose() == false)
@@ -35,10 +37,25 @@ while (Raylib.WindowShouldClose() == false)
     if (Raylib.IsKeyDown(KeyboardKey.S)) placeholderrect.Y += speed;
     if (Raylib.IsKeyDown(KeyboardKey.D)) placeholderrect.X += speed;
 
-    if (placeholderrect.Y < 0) placeholderrect.Y += speed;
-    if (placeholderrect.X + placeholderrect.Width > 1000) placeholderrect.X -= speed;
-    if (placeholderrect.Y + placeholderrect.Height > 1000) placeholderrect.Y -= speed;
+    if (placeholderrect.Y < 0)
+    {
+        float Wdiff = -placeholderrect.Y;
+        placeholderrect.Y += Wdiff;
+    }
+    if (placeholderrect.X + placeholderrect.Width > 1920)
+    {
+        float diff = placeholderrect.X + placeholderrect.Width - 1920;
+        placeholderrect.X -= diff;
+    }// Krank måsvingegrej
+    if (placeholderrect.Y + placeholderrect.Height > 1080)
+    {
+        float Sdiff = placeholderrect.Y + placeholderrect.Height - 1080;
+        placeholderrect.Y -= Sdiff;
+    }
     if (placeholderrect.X < 0) placeholderrect.X += speed;
+    {
+        
+    }
 
 
     Raylib.BeginDrawing();
@@ -46,7 +63,7 @@ while (Raylib.WindowShouldClose() == false)
     Raylib.ClearBackground(Color.Black);
     for (int i = 0; i < stars.Count; i++)
     {
-        Raylib.DrawCircleV(stars[i], 5, Color.White);
+        Raylib.DrawCircleV(stars[i], 2, Color.White);
     }//krankhjälp^
 
     Raylib.DrawTexture(placeholder, (int)placeholderrect.X, (int)placeholderrect.Y, Color.White);
